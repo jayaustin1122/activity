@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,16 +31,24 @@ public class MainActivity extends AppCompatActivity {
         mMessageEditText = findViewById(R.id.editText_main);
         mReplyHeadTextView = findViewById(R.id.text_header_reply);
         mReplyTextView = findViewById(R.id.text_message_reply);
+        Button send = findViewById(R.id.button_main);
+
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG,"Button Clicked");
+                Intent intent = new Intent(v.getContext(), SecondActivity.class);
+                String message =  mMessageEditText.getText().toString();
+                intent.putExtra("12", message);
+                startActivityForResult(intent, TEXT_REQUEST);
+                mMessageEditText.getText().clear();
+            }
+        });
 
     }
 
-    public void launchSecondActivity(View view) {
-        Log.d(LOG_TAG,"Button Clicked");
-        Intent intent = new Intent(this, SecondActivity.class);
-        String message =  mMessageEditText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivityForResult(intent, TEXT_REQUEST);
-    }
+
 
 
     @Override
