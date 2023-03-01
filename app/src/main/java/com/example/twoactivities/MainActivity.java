@@ -2,6 +2,7 @@ package com.example.twoactivities;
 
 import static androidx.core.content.PackageManagerCompat.LOG_TAG;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
         mReplyTextView = findViewById(R.id.text_message_reply);
         Button send = findViewById(R.id.button_main);
 
+        if (savedInstanceState != null){
+            boolean isVisible = savedInstanceState.getBoolean("reply_visible");
+            if (isVisible){
+                mReplyHeadTextView.setVisibility(View.VISIBLE);
+                mReplyTextView.setText(savedInstanceState.getString("reply_text"));
+                mReplyTextView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        Log.d(LOG_TAG, "---");
+        Log.d(LOG_TAG, "onCreate");
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG,"onStart");
+    }
 
 
 
@@ -61,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
                 mReplyTextView.setText(reply);
                 mReplyTextView.setVisibility(View.VISIBLE);
             }
+        }
+    }
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mReplyHeadTextView.getVisibility() == View.VISIBLE){
+            outState.putBoolean("reply_visible",true);
+            outState.putString("reply_text", mReplyTextView.getText().toString());
         }
     }
 
